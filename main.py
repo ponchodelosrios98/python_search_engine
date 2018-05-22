@@ -1,10 +1,16 @@
+from time import clock
 from crawler import crawl_web
-from indexing import look_up
+from indexing import look_up, space_ranks
 
-index = []
+index = {}
+graph = {}
 
 def search(environment, seedBase):
-  crawl_web(environment, index, seedBase, 10, 1)
-  return look_up(index, 'Google')
+  start = clock()
+  crawl_web(environment, index, graph, seedBase, 25, 1)
+  result = look_up(index, 'PayPal,')
+  endTime = clock() - start
+  return endTime, result
 
-print(search('Wikipedia', 'Esther_Wojcicki'))
+request = search('Wikipedia', 'Elon_Musk')
+print(space_ranks(graph))

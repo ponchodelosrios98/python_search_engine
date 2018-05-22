@@ -26,7 +26,7 @@ def get_all_links_from_content(page):
           break
   return links
 
-def crawl_web(environment, index, seed, max_pages, max_depth):
+def crawl_web(environment, index, graph, seed, max_pages, max_depth):
     tocrawl = ['https://wikipedia.org/wiki/' + seed]
     next_depth = []
     crawled = []
@@ -38,9 +38,10 @@ def crawl_web(environment, index, seed, max_pages, max_depth):
         if page not in crawled:
             links, page_content = get_page(environment, page, max_pages)
             add_page_to_index(index, page, page_content)
+            graph[page] = links
             mergeLists(next_depth, links)
             crawled.append(page)
         if not tocrawl:
             tocrawl, next_depth = next_depth, []
             depth = depth + 1
-    return index
+    return index, graph
